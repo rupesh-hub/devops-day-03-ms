@@ -74,7 +74,7 @@ jobs:
             APP_VERSION=${{ needs.test-and-build.outputs.version }}
 
   deploy:
-    name: Deploy gateway service
+    name: Deploy gateway service to vm
     runs-on: self-hosted
     needs: [ docker-publish ]
     steps:

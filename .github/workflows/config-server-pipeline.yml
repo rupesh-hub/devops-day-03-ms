@@ -124,7 +124,7 @@ jobs:
   deploy:
     name: Deploy config server
     runs-on: self-hosted
-    needs: [ docker-publish ]
+    needs: [ build-image ]
     steps:
       - name: Add ssh key
         uses: webfactory/ssh-agent@v0.5.3
