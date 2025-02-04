@@ -20,6 +20,14 @@ services:
       - microservices-devops
     restart: always
 
+  gateway-service:
+    container_name: gateway-service
+    image: rupesh1997/gateway-service:1.0.0
+    ports:
+      - '8687:8687'
+    networks:
+      - microservices-devops
+
 #  chat-service:
 #    container_name: chat-service
 #    image: rupesh1997/chat-service:1.0.0
@@ -29,13 +37,7 @@ services:
 #      - microservices-devops
 #    restart: always
 
-#  gateway-service:
-#    container_name: gateway-service
-#    image: rupesh1997/gateway-service:1.0.0
-#    ports:
-#      - '8687:8687'
-#    networks:
-#      - microservices-devops
+
 
 #  frontend:
 #    container_name: frontend

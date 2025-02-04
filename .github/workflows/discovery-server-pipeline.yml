@@ -123,7 +123,7 @@ jobs:
   deploy:
     name: Deploy discovery server
     runs-on: self-hosted
-    needs: [ build-image ]
+    needs: [ docker-publish ]
     steps:
       - name: Add ssh key
         uses: webfactory/ssh-agent@v0.5.3
@@ -136,10 +136,13 @@ jobs:
       - name: Copy compose file
         run: scp docker-compose.yml ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }}:ci-cd/docker-compose.yml
 
+      - name: Set permissions for docker-compose
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }} "chmod +x ci-cd/docker-compose.yml"
+
       - name: Set ENV variable and deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }} <<EOF
             cd ci-cd
             docker-compose -f docker-compose.yml pull -q
-            docker-compose -f docker-compose.yml up -d
+            docker-compose -f docker-compose.yml up -d --remove-orphans
           EOF
