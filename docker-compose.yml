@@ -28,26 +28,25 @@ services:
     networks:
       - microservices-devops
 
-#  chat-service:
-#    container_name: chat-service
-#    image: rupesh1997/chat-service:1.0.0
-#    ports:
-#      - '9393:9393'
-#    networks:
-#      - microservices-devops
-#    restart: always
+  chat-service:
+    container_name: chat-service
+    image: rupesh1997/chat-service:1.0.0
+    ports:
+      - '9393:9393'
+    networks:
+      - microservices-devops
+    restart: always
 
-
-#  frontend:
-#    container_name: frontend
-#    image: rupesh1997/frontend:latest
-#    ports:
-#      - "8080:80"
-#    networks:
-#      - microservices-devops
-#    depends_on:
-#      - gateway-service
-#    restart: always
+  frontend:
+    container_name: frontend
+    image: rupesh1997/frontend:latest
+    ports:
+      - "8080:80"
+    networks:
+      - microservices-devops
+    depends_on:
+      - gateway-service
+    restart: always
 
 networks:
   microservices-devops:

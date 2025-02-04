@@ -1,14 +1,14 @@
-name: GATEWAY SERVICE CI/CD
+name: CHAT SERVICE CI/CD
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'GATEWAY-SERVICE/**'
-      - 'docker/backend/gateway-service/**'
+      - 'CHAT-SERVICE/**'
+      - 'docker/backend/chat-service/**'
       - 'docker-compose.yml'
-      - '.github/workflows/gateway-service-*.yml'
+      - '.github/workflows/chat-service-*.yml'
 
 jobs:
   test-and-build:
@@ -31,13 +31,13 @@ jobs:
 
       - name: Run tests and build
         run: |
-          cd GATEWAY-SERVICE
+          cd CHAT-SERVICE
           ./mvnw clean verify package
 
       - name: Extract version
         id: get_version  # Add ID to reference this step
         run: |
-          cd GATEWAY-SERVICE
+          cd CHAT-SERVICE
           VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"  # Debug output
@@ -62,19 +62,19 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: GATEWAY-SERVICE
-          file: docker/backend/gateway-service/Dockerfile
+          context: CHAT-SERVICE
+          file: docker/backend/chat-service/Dockerfile
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/gateway-service:${{ needs.test-and-build.outputs.version }}
-            ${{ secrets.DOCKER_USERNAME }}/gateway-service:latest
+            ${{ secrets.DOCKER_USERNAME }}/chat-service:${{ needs.test-and-build.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/chat-service:latest
           build-args: |
             PROFILE=dev
             APP_VERSION=${{ needs.test-and-build.outputs.version }}
 
 #  deploy:
-#    name: Deploy gateway service to vm
+#    name: Deploy chat service
 #    runs-on: self-hosted
 #    needs: [ docker-publish ]
 #    steps:
@@ -89,13 +89,10 @@ jobs:
 #      - name: Copy compose file
 #        run: scp docker-compose.yml ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }}:ci-cd/docker-compose.yml
 #
-#      - name: Set permissions for docker-compose
-#        run: ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }} "chmod +x ci-cd/docker-compose.yml"
-#
 #      - name: Set ENV variable and deploy
 #        run: |
 #          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }} <<EOF
 #            cd ci-cd
 #            docker-compose -f docker-compose.yml pull -q
-#            docker-compose -f docker-compose.yml up -d --remove-orphans
+#            docker-compose -f docker-compose.yml up -d
 #          EOF
