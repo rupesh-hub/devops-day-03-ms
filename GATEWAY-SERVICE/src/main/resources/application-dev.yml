@@ -12,11 +12,13 @@ spring:
           enabled: true
           lowerCaseServiceId: true
 
-# Rest of config remains same
+#EUREKA/DISCOVERY-SERVER CONFIGURATION
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://20.0.96.13:8761/eureka/
+  instance:
+    hostname: discovery-server
 
 management:
   endpoints:
