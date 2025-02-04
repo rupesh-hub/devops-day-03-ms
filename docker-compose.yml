@@ -11,20 +11,20 @@ services:
       - microservices-devops
     restart: always
 
+  config-service:
+    container_name: config-service
+    image: rupesh1997/config-service:1.0.0
+    ports:
+      - '8888:8888'
+    networks:
+      - microservices-devops
+    restart: always
+
 #  chat-service:
 #    container_name: chat-service
 #    image: rupesh1997/chat-service:1.0.0
 #    ports:
 #      - '9393:9393'
-#    networks:
-#      - microservices-devops
-#    restart: always
-
-#  config-service:
-#    container_name: config-service
-#    image: rupesh1997/config-service:1.0.0
-#    ports:
-#      - '8888:8888'
 #    networks:
 #      - microservices-devops
 #    restart: always
