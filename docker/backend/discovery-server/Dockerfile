@@ -12,11 +12,11 @@ ARG PROFILE=dev
 ARG APP_VERSION=1.0.0
 
 WORKDIR /app
-COPY --from=build /build/target/discovery-service-*.jar /app/
+COPY --from=build /build/target/discovery-server-*.jar /app/
 
 EXPOSE 8761
 
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
 
-CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} discovery-service-${JAR_VERSION}.jar
+CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} discovery-server-${JAR_VERSION}.jar
